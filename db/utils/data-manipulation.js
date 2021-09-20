@@ -1,1 +1,4 @@
-// extract any functions you are using to manipulate your data, into this file
+exports.formatCategoryData = (categories) => {
+  if (!categories.length) return []
+  return categories.map((category) => [category.slug, category.description])
+}
