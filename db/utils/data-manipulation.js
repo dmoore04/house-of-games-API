@@ -1,23 +1,30 @@
 exports.formatCategoryData = (categories) => {
-  if (!categories.length) return []
   return categories.map((category) => [category.slug, category.description])
 }
 
 exports.formatUserData = (users) => {
-  if (!users.length) return []
-  return users.map((user) => [user.username, user.name, user.avatar_url])
+  return users.map((user) => [user.username, user.avatar_url, user.name])
 }
 
 exports.formatReviewData = (reviews) => {
-  if (!reviews.length) return []
   return reviews.map((review) => [
     review.title,
-    review.designer,
-    review.owner,
-    review.review_img_url,
     review.review_body,
-    review.category,
-    review.created_at,
+    review.designer,
+    review.review_img_url,
     review.votes,
+    review.category,
+    review.owner,
+    review.created_at,
+  ])
+}
+
+exports.formatCommentData = (comments) => {
+  return comments.map((comment) => [
+    comment.author,
+    comment.review_id,
+    comment.votes,
+    comment.created_at,
+    comment.body,
   ])
 }
