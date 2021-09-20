@@ -1,13 +1,15 @@
 const db = require("../connection")
+const format = require("pg-format")
+const { formatData } = require("../utils/data-manipulation")
 
 const seed = async (data) => {
-  const { categoryData, commentData, reviewData, userData } = data
   try {
     await createTables()
+    await insertData(data)
+    console.log(`Database(${process.env.PGDATABASE}) seeded.`)
   } catch (err) {
     console.log(err)
   }
-  // 2. insert data
 }
 
 /* Helper Functions */
@@ -55,7 +57,7 @@ const createTables = async () => {
   await db.query(createReviews)
   await db.query(createComments)
 
-  console.log("Created all tables.")
+  console.log("Created all tables.\n")
 }
 
 const dropTables = async () => {
@@ -68,6 +70,66 @@ const dropTables = async () => {
     db.query(`DROP TABLE IF EXISTS categories;`),
   ])
   console.log("Dropped all tables.\n")
+}
+
+const insertData = async (data) => {
+  const { categoryValues, userValues, reviewValues, commentValues } =
+    formatData(data)
+
+  // concurrently insert values for unlinked tables
+  const insertUsersQuery = format(
+    `
+  INSERT INTO users
+    (username, avatar_url, name)
+  VALUES
+    %L
+  RETURNING *;
+  `,
+    userValues
+  )
+
+  const insertCategoriesQuery = format(
+    `
+  INSERT INTO categories
+    (slug, description)
+  VALUES
+    %L
+  RETURNING *;
+  `,
+    categoryValues
+  )
+  // concurrently insert unlinked values
+  await Promise.all([
+    db.query(insertUsersQuery),
+    db.query(insertCategoriesQuery),
+  ])
+
+  // sequentially insert linked values
+  const insertReviewsQuery = format(
+    `
+  INSERT INTO reviews
+    (title, review_body, designer, review_img_url, votes, category, owner, created_at)
+  VALUES
+    %L
+  RETURNING *;
+  `,
+    reviewValues
+  )
+  await db.query(insertReviewsQuery)
+
+  const insertCommentsQuery = format(
+    `
+  INSERT INTO comments
+    (author, review_id, votes, created_at, body)
+  VALUES
+    %L
+  RETURNING *;
+  `,
+    commentValues
+  )
+  await db.query(insertCommentsQuery)
+
+  console.log(`Inserted values into tables.\n`)
 }
 
 module.exports = seed
