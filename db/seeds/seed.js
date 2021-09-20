@@ -2,32 +2,33 @@ const db = require("../connection")
 
 const seed = async (data) => {
   const { categoryData, commentData, reviewData, userData } = data
-  // 1. create tables
   try {
-    // sequantially drop linked tables
-    await db.query(`DROP TABLE IF EXISTS comments;`)
-    await db.query(`DROP TABLE IF EXISTS reviews;`)
-    // concurrently drop unlinked tables
-    await Promise.all([
-      db.query(`DROP TABLE IF EXISTS users;`),
-      db.query(`DROP TABLE IF EXISTS categories;`),
-    ])
-    console.log("Dropped all tables.\n")
-    /* Query Strings */
-    const createCategories = `
+    await createTables()
+  } catch (err) {
+    console.log(err)
+  }
+  // 2. insert data
+}
+
+/* Helper Functions */
+
+const createTables = async () => {
+  await dropTables()
+  /* Query Strings */
+  const createCategories = `
     CREATE TABLE categories (
       slug VARCHAR(40) PRIMARY KEY,
       description TEXT NOT NULL
     );`
-    const createUsers = `
+  const createUsers = `
     CREATE TABLE users (
       username VARCHAR(40) PRIMARY KEY,
       avatar_url TEXT NOT NULL,
       name VARCHAR(40) NOT NULL
     );`
-    const reviewImgDefaultURL =
-      "https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg"
-    const createReviews = `
+  const reviewImgDefaultURL =
+    "https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg"
+  const createReviews = `
     CREATE TABLE reviews (
       review_id SERIAL PRIMARY KEY,
       title VARCHAR(120) NOT NULL,
@@ -39,7 +40,7 @@ const seed = async (data) => {
       owner VARCHAR(40) REFERENCES users(username) NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );`
-    const createComments = `
+  const createComments = `
     CREATE TABLE comments (
       comment_id SERIAL PRIMARY KEY,
       author VARCHAR(40) REFERENCES users(username) NOT NULL,
@@ -48,17 +49,25 @@ const seed = async (data) => {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       body TEXT NOT NULL
     );`
-    // concurrently create tables with no dependencies
-    await Promise.all([db.query(createCategories), db.query(createUsers)])
-    // sequentially create dependant tables
-    await db.query(createReviews)
-    await db.query(createComments)
+  // concurrently create tables with no dependencies
+  await Promise.all([db.query(createCategories), db.query(createUsers)])
+  // sequentially create dependant tables
+  await db.query(createReviews)
+  await db.query(createComments)
 
-    console.log("Created all tables.")
-  } catch (err) {
-    console.log(err)
-  }
-  // 2. insert data
+  console.log("Created all tables.")
+}
+
+const dropTables = async () => {
+  // sequantially drop linked tables
+  await db.query(`DROP TABLE IF EXISTS comments;`)
+  await db.query(`DROP TABLE IF EXISTS reviews;`)
+  // concurrently drop unlinked tables
+  await Promise.all([
+    db.query(`DROP TABLE IF EXISTS users;`),
+    db.query(`DROP TABLE IF EXISTS categories;`),
+  ])
+  console.log("Dropped all tables.\n")
 }
 
 module.exports = seed
