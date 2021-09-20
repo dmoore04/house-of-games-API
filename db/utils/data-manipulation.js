@@ -43,6 +43,6 @@ module.exports = {
   formatCategoryData,
   formatUserData,
   formatReviewData,
-  formatReviewData,
+  formatCommentData,
   formatData,
 }
