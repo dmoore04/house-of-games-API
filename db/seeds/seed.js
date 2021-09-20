@@ -2,7 +2,7 @@ const db = require("../connection")
 const format = require("pg-format")
 const { formatData } = require("../utils/data-manipulation")
 
-const seed = async (data) => {
+exports.seed = async (data) => {
   try {
     await createTables()
     await insertData(data)
@@ -57,7 +57,7 @@ const createTables = async () => {
   await db.query(createReviews)
   await db.query(createComments)
 
-  console.log("Created all tables.\n")
+  // console.log("Created all tables.\n")
 }
 
 const dropTables = async () => {
@@ -69,7 +69,7 @@ const dropTables = async () => {
     db.query(`DROP TABLE IF EXISTS users;`),
     db.query(`DROP TABLE IF EXISTS categories;`),
   ])
-  console.log("Dropped all tables.\n")
+  // console.log("Dropped all tables.\n")
 }
 
 const insertData = async (data) => {
@@ -129,7 +129,5 @@ const insertData = async (data) => {
   )
   await db.query(insertCommentsQuery)
 
-  console.log(`Inserted values into tables.\n`)
+  // console.log(`Inserted values into tables.\n`)
 }
-
-module.exports = seed
