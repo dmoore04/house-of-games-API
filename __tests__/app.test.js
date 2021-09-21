@@ -7,21 +7,25 @@ const request = require("supertest")
 beforeEach(() => seed(testData))
 afterAll(() => db.end())
 
-describe("GET /api/categories", () => {
-  it("200: responds with an array of appropriate category objects", async () => {
-    const { body } = await request(app).get("/api/categories").expect(200)
+describe("/api", () => {
+  describe("/categories", () => {
+    describe("GET", () => {
+      it("200: responds with an array of appropriate category objects", async () => {
+        const { body } = await request(app).get("/api/categories").expect(200)
 
-    expect(body.categories.length).toBe(4)
+        expect(body.categories.length).toBe(4)
 
-    expect(body.categories[0]).toMatchObject({
-      slug: "euro game",
-      description: "Abstact games that involve little luck",
-    })
+        expect(body.categories[0]).toMatchObject({
+          slug: "euro game",
+          description: "Abstact games that involve little luck",
+        })
 
-    body.categories.forEach((category) => {
-      expect(category).toMatchObject({
-        slug: expect.any(String),
-        description: expect.any(String),
+        body.categories.forEach((category) => {
+          expect(category).toMatchObject({
+            slug: expect.any(String),
+            description: expect.any(String),
+          })
+        })
       })
     })
   })
