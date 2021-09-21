@@ -1,5 +1,4 @@
 const db = require("../db/connection")
-const reviewsRouter = require("../routes/reviews.router")
 
 exports.selectReviews = async () => {
   const queryStr = `
