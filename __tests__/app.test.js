@@ -85,7 +85,7 @@ describe("/api", () => {
   })
 })
 
-describe.only("/a_bad_route", () => {
+describe("/a_bad_route", () => {
   describe("GET", () => {
     it("404: reponds with a not found error message", async () => {
       const badRoutes = ["/apy", "/api/cattygories", "/api/reeeviewz"]
