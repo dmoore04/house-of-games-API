@@ -71,7 +71,7 @@ describe("/api", () => {
         ]
 
         const requests = validQueries.map((query) =>
-          request(app).get(`/api/reviews?sort_by=${query}`)
+          request(app).get(`/api/reviews?sort_by=${query}`).expect(200)
         )
 
         const responses = await Promise.all(requests)
@@ -80,6 +80,22 @@ describe("/api", () => {
         bodies.forEach((body, index) => {
           expect(body.reviews).toBeSortedBy(validQueries[index])
         })
+      })
+    })
+  })
+})
+
+describe.only("/a_bad_route", () => {
+  describe("GET", () => {
+    it("404: reponds with a not found error message", async () => {
+      const badRoutes = ["/apy", "/api/cattygories", "/api/reeeviewz"]
+      const requests = badRoutes.map((route) =>
+        request(app).get(route).expect(404)
+      )
+      const responses = await Promise.all(requests)
+      const bodies = responses.map((response) => response.body)
+      bodies.forEach((body) => {
+        expect(body.msg).toBe("Route not found")
       })
     })
   })
