@@ -58,6 +58,29 @@ describe("/api", () => {
           expect(review).toMatchObject(expected)
         })
       })
+
+      it.only("200: sorts results by the value of the sort_by query if one is provided", async () => {
+        const validQueries = [
+          "review_id",
+          "created_at",
+          "category",
+          "title",
+          "owner",
+          "votes",
+          "designer",
+        ]
+
+        const requests = validQueries.map((query) =>
+          request(app).get(`/api/reviews?sort_by=${query}`)
+        )
+
+        const responses = await Promise.all(requests)
+        const bodies = responses.map((response) => response.body)
+
+        bodies.forEach((body, index) => {
+          expect(body.reviews).toBeSortedBy(validQueries[index])
+        })
+      })
     })
   })
 })
