@@ -98,7 +98,11 @@ describe("/api", () => {
 describe("/a_bad_route", () => {
   describe("GET", () => {
     it("404: reponds with a not found error message", async () => {
-      const badRoutes = ["/apy", "/api/cattygories", "/api/reeeviewz"]
+      const badRoutes = [
+        "/apy",
+        "/api/cattygories",
+        "/api/reeeviewz?sort_by=review_id",
+      ]
       const requests = badRoutes.map((route) =>
         request(app).get(route).expect(404)
       )
