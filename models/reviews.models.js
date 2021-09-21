@@ -13,6 +13,5 @@ exports.selectReviews = async (sort_by = "created_at") => {
     sort_by
   )
   const reviews = await db.query(queryStr)
-  //console.log(reviews.rows)
   return reviews.rows
 }

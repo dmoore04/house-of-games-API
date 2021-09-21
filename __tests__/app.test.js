@@ -59,7 +59,7 @@ describe("/api", () => {
         })
       })
 
-      it.only("200: sorts results by the value of the sort_by query if one is provided", async () => {
+      it("200: sorts results by the value of the sort_by query if one is provided", async () => {
         const validQueries = [
           "review_id",
           "created_at",
