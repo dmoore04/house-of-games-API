@@ -81,6 +81,16 @@ describe("/api", () => {
           expect(body.reviews).toBeSortedBy(validQueries[index])
         })
       })
+
+      //TODO: test sort_by query un-happy path
+      it("400: responds with an error message when a bad query value is provided ", async () => {
+        const res = await request(app)
+          .get("/api/reviews?sort_by=not_a_column")
+          .expect(400)
+        expect(res.body.msg).toBe("Invalid query value")
+      })
+      //TODO: implement 'order' sorting query
+      //TODO: implement 'category' filter query
     })
   })
 })
