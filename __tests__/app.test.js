@@ -8,6 +8,16 @@ beforeEach(() => seed(testData))
 afterAll(() => db.end())
 
 describe("/api", () => {
+  describe("GET", () => {
+    it("200: responds with a json representation of all available endpoints", async () => {
+      const endpoints = ["GET /api/categories", "GET /api", "GET /api/reviews"]
+      const res = await request(app).get("/api").expect(200)
+      endpoints.forEach((endpoint) => {
+        expect(res.body.endpoints).toHaveProperty(endpoint)
+        expect(res.body.endpoints[endpoint]).toHaveProperty("description")
+      })
+    })
+  })
   describe("/categories", () => {
     describe("GET", () => {
       it("200: responds with an array of appropriate category objects", async () => {
@@ -29,4 +39,5 @@ describe("/api", () => {
       })
     })
   })
+  describe("/reviews", () => {})
 })
