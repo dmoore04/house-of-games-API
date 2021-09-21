@@ -6,7 +6,6 @@ exports.seed = async (data) => {
   try {
     await createTables()
     await insertData(data)
-    console.log(`Database(${process.env.PGDATABASE}) seeded.`)
   } catch (err) {
     console.log(err)
   }
