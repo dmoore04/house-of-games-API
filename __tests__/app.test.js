@@ -47,9 +47,9 @@ describe("/api", () => {
         const expected = {
           title: expect.any(String),
           owner: expect.any(String),
-          review_img_url: expect.any(String),
+          review_img_url: expect.stringContaining("https://"),
           category: expect.any(String),
-          created_at: expect.any(String),
+          created_at: expect.stringMatching(/^\d{4}.+\w$/),
           votes: expect.any(Number),
           review_id: expect.any(Number),
           comment_count: expect.any(Number),
