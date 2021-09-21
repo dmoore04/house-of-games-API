@@ -39,5 +39,25 @@ describe("/api", () => {
       })
     })
   })
-  describe("/reviews", () => {})
+  describe("/reviews", () => {
+    describe("GET", () => {
+      it("200: responds with an array of all reviews", async () => {
+        const res = await request(app).get("/api/reviews").expect(200)
+        expect(res.body.reviews.length).toBe(13)
+        const expected = {
+          title: expect.any(String),
+          owner: expect.any(String),
+          review_img_url: expect.any(String),
+          category: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          review_id: expect.any(Number),
+          comment_count: expect.any(Number),
+        }
+        res.body.reviews.forEach((review) => {
+          expect(review).toMatchObject(expected)
+        })
+      })
+    })
+  })
 })
