@@ -40,9 +40,7 @@ exports.selectReviewById = async (review_id) => {
     [review_id]
   )
 
-  if (review.rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "No data found" })
-  }
+  if (review.rows.length === 0) return reject404()
 
   return review.rows[0]
 }
@@ -57,5 +55,9 @@ exports.updateReview = async (review_id, inc_votes = 0) => {
     [inc_votes, review_id]
   )
 
+  if (updatedReview.rows.length === 0) return reject404()
+
   return updatedReview.rows[0]
 }
+
+const reject404 = () => Promise.reject({ status: 404, msg: "No data found" })
