@@ -113,7 +113,10 @@ describe("/api", () => {
       it("400: responds with an error message when a bad query value is provided ", async () => {
         const badQueries = [
           "sort_by=not_a_column",
+          "sort_by=1",
           "category=not_a_category",
+          "category=1",
+          "order=not_an_order",
           "order=1",
         ]
 
@@ -126,8 +129,6 @@ describe("/api", () => {
           expect(response.body.msg).toBe("Invalid query value")
         })
       })
-
-      //TODO: test bad query key response
     })
   })
 })
