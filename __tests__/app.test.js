@@ -130,6 +130,24 @@ describe("/api", () => {
         })
       })
     })
+    describe.only("/:review_id", () => {
+      describe("GET", () => {
+        it("200: responds with a review object corresponsing to the passed id", async () => {
+          const res = await request(app).get("/api/reviews/1").expect(200)
+          const expected = {
+            title: expect.any(String),
+            owner: expect.any(String),
+            review_img_url: expect.stringContaining("https://"),
+            category: expect.any(String),
+            created_at: expect.stringMatching(/^\d{4}.+\w$/),
+            votes: expect.any(Number),
+            review_id: 1,
+            comment_count: expect.any(Number),
+          }
+          expect(res.body.review).toMatchObject(expected)
+        })
+      })
+    })
   })
 })
 
