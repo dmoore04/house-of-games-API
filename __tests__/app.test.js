@@ -148,7 +148,7 @@ describe("/api", () => {
           expect(res.body.review).toMatchObject(expected)
         })
 
-        it("400: responds with an error message when an invalid parameter is provided", async () => {
+        it("400: responds with an error message when id parameter is not a number", async () => {
           const res = await request(app)
             .get("/api/reviews/not_a_number")
             .expect(400)
@@ -161,7 +161,7 @@ describe("/api", () => {
         })
       })
 
-      describe.only("PATCH", () => {
+      describe("PATCH", () => {
         it("201: updates the review and responds with its updated state", async () => {
           const res = await request(app)
             .patch("/api/reviews/1")
@@ -179,6 +179,29 @@ describe("/api", () => {
           }
 
           expect(res.body.review).toMatchObject(expected)
+        })
+
+        it("400: responds with an error message when body is malformed", async () => {
+          const res = await request(app)
+            .patch("/api/reviews/1")
+            .send({ inc_votes: "bad value" })
+            .expect(400)
+          expect(res.body.msg).toBe("Bad request")
+        })
+
+        it("400: responds with an error message when review_id is not a number", async () => {
+          const res = await request(app)
+            .patch("/api/reviews/not_a_number")
+            .send({ inc_votes: 1 })
+            .expect(400)
+          expect(res.body.msg).toBe("Bad request")
+        })
+
+        it("404: responds with an error message when no review with specified id exists", async () => {
+          const res = await request(app)
+            .patch("/api/reviews/999999")
+            .expect(404)
+          expect(res.body.msg).toBe("No data found")
         })
       })
     })
