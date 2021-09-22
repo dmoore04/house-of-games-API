@@ -78,17 +78,27 @@ describe("/api", () => {
         const bodies = responses.map((response) => response.body)
 
         bodies.forEach((body, index) => {
-          expect(body.reviews).toBeSortedBy(validQueries[index])
+          expect(body.reviews).toBeSortedBy(validQueries[index], {
+            descending: true,
+          })
         })
       })
 
-      //TODO: test sort_by query un-happy path
+      it("200: orders results according to the value of the order query", async () => {
+        const res = await request(app).get("/api/reviews?order=asc").expect(200)
+
+        const reviews = res.body.reviews
+        expect(reviews).toBeSortedBy("created_at", { descending: false })
+      })
+
       it("400: responds with an error message when a bad query value is provided ", async () => {
         const res = await request(app)
           .get("/api/reviews?sort_by=not_a_column")
           .expect(400)
         expect(res.body.msg).toBe("Invalid query value")
       })
+
+      //TODO: test bad query key response
       //TODO: implement 'order' sorting query
       //TODO: implement 'category' filter query
     })
