@@ -1,14 +1,14 @@
 const db = require("../db/connection")
 const format = require("pg-format")
 
-exports.selectReviews = async (sort_by = "created_at") => {
+exports.selectReviews = async (sort_by = "created_at", order = "desc") => {
   const queryStr = format(
     `
   SELECT reviews.*, COUNT(comments.review_id)::INT AS comment_count
   FROM reviews
     LEFT JOIN comments ON reviews.review_id = comments.review_id
   GROUP BY reviews.review_id
-  ORDER BY %I
+  ORDER BY %I ${order} 
   `,
     sort_by
   )
