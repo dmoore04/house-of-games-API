@@ -153,6 +153,11 @@ describe("/api", () => {
             .expect(400)
           expect(res.body.msg).toBe("Bad request")
         })
+
+        it("404: responds with an error message when the request is well formed but no data was found", async () => {
+          const res = await request(app).get("/api/reviews/999999").expect(404)
+          expect(res.body.msg).toBe("No data found")
+        })
       })
     })
   })
