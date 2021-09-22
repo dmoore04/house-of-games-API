@@ -8,8 +8,8 @@ exports.selectReviews = async (
 ) => {
   let queryStr = `
   SELECT reviews.*, COUNT(comments.review_id)::INT AS comment_count
-  FROM reviews
-    LEFT JOIN comments ON reviews.review_id = comments.review_id
+  FROM reviews LEFT JOIN comments 
+    ON reviews.review_id = comments.review_id
   `
 
   const queryValues = []
@@ -27,4 +27,18 @@ exports.selectReviews = async (
 
   const reviews = await db.query(queryStr, queryValues)
   return reviews.rows
+}
+
+exports.selectReviewById = async (review_id) => {
+  const review = await db.query(
+    `
+  SELECT reviews.*, COUNT(comments.review_id)::INT AS comment_count
+  FROM reviews LEFT JOIN comments 
+    ON reviews.review_id = comments.review_id
+  WHERE reviews.review_id = $1
+  GROUP BY reviews.review_id;`,
+    [review_id]
+  )
+
+  return review.rows[0]
 }
