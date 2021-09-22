@@ -205,6 +205,9 @@ describe("/api", () => {
         })
       })
     })
+
+    //TODO: implement GET /:review_id/comments endpoint
+    //TODO: implement POST /:review_id/comments endpoint
   })
 })
 
