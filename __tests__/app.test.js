@@ -130,7 +130,7 @@ describe("/api", () => {
         })
       })
     })
-    describe.only("/:review_id", () => {
+    describe("/:review_id", () => {
       describe("GET", () => {
         it("200: responds with a review object corresponsing to the passed id", async () => {
           const res = await request(app).get("/api/reviews/1").expect(200)
@@ -145,6 +145,13 @@ describe("/api", () => {
             comment_count: expect.any(Number),
           }
           expect(res.body.review).toMatchObject(expected)
+        })
+
+        it("400: responds with an error message when an invalid parameter is provided", async () => {
+          const res = await request(app)
+            .get("/api/reviews/not_a_number")
+            .expect(400)
+          expect(res.body.msg).toBe("Bad request")
         })
       })
     })
