@@ -1,7 +1,9 @@
 exports.handlePSQL400Errors = (err, req, res, next) => {
-  if (err.code === "42703") {
-    res.status(400).send({ msg: "Invalid query value" })
-  } else {
-    next(err)
+  const codeMap = {
+    42703: "Invalid query value",
+    "22P02": "Bad request",
   }
+
+  const msg = codeMap[err.code]
+  msg ? res.status(400).send({ msg }) : next(err)
 }
