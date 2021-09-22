@@ -75,10 +75,9 @@ describe("/api", () => {
         )
 
         const responses = await Promise.all(requests)
-        const bodies = responses.map((response) => response.body)
 
-        bodies.forEach((body, index) => {
-          expect(body.reviews).toBeSortedBy(validQueries[index], {
+        responses.forEach((response, index) => {
+          expect(response.body.reviews).toBeSortedBy(validQueries[index], {
             descending: true,
           })
         })
@@ -99,25 +98,36 @@ describe("/api", () => {
           "children's games",
         ]
 
-        for (let i = 0, end = categories.length; i < end; i++) {
-          const res = await request(app)
-            .get(`/api/reviews?category=${categories[i]}`)
-            .expect(200)
-          res.body.reviews.forEach((review) => {
-            expect(review).toHaveProperty("category", categories[i])
+        const requests = categories.map((category) =>
+          request(app).get(`/api/reviews?category=${category}`).expect(200)
+        )
+
+        const responses = await Promise.all(requests)
+        responses.forEach((response, index) => {
+          response.body.reviews.forEach((review) => {
+            expect(review).toHaveProperty("category", categories[index])
           })
-        }
+        })
       })
 
       it("400: responds with an error message when a bad query value is provided ", async () => {
-        const res = await request(app)
-          .get("/api/reviews?sort_by=not_a_column")
-          .expect(400)
-        expect(res.body.msg).toBe("Invalid query value")
+        const badQueries = [
+          "sort_by=not_a_column",
+          "category=not_a_category",
+          "order=1",
+        ]
+
+        const requests = badQueries.map((query) =>
+          request(app).get(`/api/reviews?${badQueries}`).expect(400)
+        )
+
+        const responses = await Promise.all(requests)
+        responses.forEach((response) => {
+          expect(response.body.msg).toBe("Invalid query value")
+        })
       })
 
       //TODO: test bad query key response
-      //TODO: implement 'category' filter query
     })
   })
 })
