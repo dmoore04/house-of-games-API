@@ -17,7 +17,7 @@ exports.selectReviews = async (
     queryStr += `WHERE category = $1`
     queryValues.push(category)
   }
-
+  // SQL Injection???
   queryStr += format(
     `
   GROUP BY reviews.review_id
@@ -45,4 +45,17 @@ exports.selectReviewById = async (review_id) => {
   }
 
   return review.rows[0]
+}
+
+exports.updateReview = async (review_id, inc_votes = 0) => {
+  const updatedReview = await db.query(
+    `
+  UPDATE reviews
+  SET votes = votes + $1
+  WHERE review_id = $2
+  RETURNING *;`,
+    [inc_votes, review_id]
+  )
+
+  return updatedReview.rows[0]
 }

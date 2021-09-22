@@ -2,8 +2,9 @@ const reviewsRouter = require("express").Router()
 const {
   sendReviews,
   sendReview,
+  patchReview,
 } = require("../controllers/reviews.controllers")
 
 reviewsRouter.get("/", sendReviews)
-reviewsRouter.get("/:review_id", sendReview)
+reviewsRouter.route("/:review_id").get(sendReview).patch(patchReview)
 module.exports = reviewsRouter
