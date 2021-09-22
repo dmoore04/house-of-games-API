@@ -91,6 +91,24 @@ describe("/api", () => {
         expect(reviews).toBeSortedBy("created_at", { descending: false })
       })
 
+      it("200: filters results according to the category query value", async () => {
+        const categories = [
+          "euro game",
+          "social deduction",
+          "dexterity",
+          "children's games",
+        ]
+
+        for (let i = 0, end = categories.length; i < end; i++) {
+          const res = await request(app)
+            .get(`/api/reviews?category=${categories[i]}`)
+            .expect(200)
+          res.body.reviews.forEach((review) => {
+            expect(review).toHaveProperty("category", categories[i])
+          })
+        }
+      })
+
       it("400: responds with an error message when a bad query value is provided ", async () => {
         const res = await request(app)
           .get("/api/reviews?sort_by=not_a_column")
@@ -99,7 +117,6 @@ describe("/api", () => {
       })
 
       //TODO: test bad query key response
-      //TODO: implement 'order' sorting query
       //TODO: implement 'category' filter query
     })
   })
