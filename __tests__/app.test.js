@@ -113,6 +113,7 @@ describe("/api", () => {
       it("400: responds with an error message when a bad query value is provided ", async () => {
         const badQueries = [
           "sort_by=not_a_column",
+          "sort_by=review_id; DROP TABLE IF EXISTS reviews;",
           "sort_by=1",
           "category=not_a_category",
           "category=1",
@@ -157,6 +158,27 @@ describe("/api", () => {
         it("404: responds with an error message when the request is well formed but no data was found", async () => {
           const res = await request(app).get("/api/reviews/999999").expect(404)
           expect(res.body.msg).toBe("No data found")
+        })
+      })
+
+      describe.only("PATCH", () => {
+        it("201: updates the review and responds with its updated state", async () => {
+          const res = await request(app)
+            .patch("/api/reviews/1")
+            .send({ inc_votes: 3 })
+            .expect(201)
+
+          const expected = {
+            title: expect.any(String),
+            owner: expect.any(String),
+            review_img_url: expect.stringContaining("https://"),
+            category: expect.any(String),
+            created_at: expect.stringMatching(/^\d{4}.+\w$/),
+            votes: 4,
+            review_id: 1,
+          }
+
+          expect(res.body.review).toMatchObject(expected)
         })
       })
     })
