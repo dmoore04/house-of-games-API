@@ -244,7 +244,22 @@ describe("/api", () => {
       })
       //TODO: implement POST /:review_id/comments endpoint
       describe("POST", () => {
-        it("201:", () => {})
+        it("201: creates a new comment object tied to the given review, responds with the posted comment", async () => {
+          const res = await request(app)
+            .post("/api/reviews/1/comments")
+            .send({ username: "mallionaire", body: "es muy grande mucho" })
+            .expect(201)
+
+          const expected = {
+            comment_id: expect.any(Number),
+            votes: expect.any(Number),
+            created_at: expect.stringMatching(/^\d{4}.+\w$/),
+            author: expect.any(String),
+            body: expect.any(String),
+          }
+
+          expect(res.body.comment).toMatchObject(expected)
+        })
       })
     })
   })
