@@ -13,9 +13,12 @@ exports.handlePSQL = (err, req, res, next) => {
       msg: "Bad request",
     },
   }
-
-  const { status, msg } = codeMap[err.code]
-  msg ? res.status(status).send({ msg }) : next(err)
+  if (codeMap[err.code]) {
+    const { status, msg } = codeMap[err.code]
+    res.status(status).send({ msg })
+  } else {
+    next(err)
+  }
 }
 
 exports.handleCustom = (err, req, res, next) => {
