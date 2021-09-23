@@ -83,7 +83,7 @@
     }
   },
   "POST /api/reviews/:review_id/comments": {
-    "description": "adds a new comment tied to the given reviews, responds with the posted comment",
+    "description": "adds a new comment tied to the given review, responds with the posted comment",
     "accepts": {
       "username": "string: reviewAuthor",
       "body": "string: reviewBody"
