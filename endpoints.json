@@ -4,7 +4,6 @@
   },
   "GET /api/categories": {
     "description": "serves an array of all categories",
-    "queries": [],
     "exampleResponse": {
       "categories": [
         {
