@@ -1,5 +1,6 @@
 const db = require("../db/connection")
 const format = require("pg-format")
+const { reject404 } = require("../errors/utils")
 
 exports.selectReviews = async (
   sort_by = "created_at",
@@ -59,5 +60,3 @@ exports.updateReview = async (review_id, inc_votes = 0) => {
 
   return updatedReview.rows[0]
 }
-
-const reject404 = () => Promise.reject({ status: 404, msg: "No data found" })
