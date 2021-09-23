@@ -14,3 +14,17 @@ exports.selectReviewComments = async (review_id) => {
 
   return comments.rows
 }
+
+exports.insertReviewComment = async (review_id, body, username) => {
+  const comment = await db.query(
+    `
+  INSERT INTO comments
+    (review_id, body, author)
+  VALUES
+    ($1, $2, (SELECT username FROM users WHERE username = $3))
+  RETURNING *;`,
+    [review_id, body, username]
+  )
+
+  return comment.rows[0]
+}

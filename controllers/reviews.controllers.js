@@ -4,7 +4,10 @@ const {
   updateReview,
 } = require("../models/reviews.models")
 
-const { selectReviewComments } = require("../models/comments.models.js")
+const {
+  selectReviewComments,
+  insertReviewComment,
+} = require("../models/comments.models.js")
 
 exports.sendReviews = async (req, res, next) => {
   try {
@@ -42,6 +45,17 @@ exports.sendReviewComments = async (req, res, next) => {
     const { review_id } = req.params
     const comments = await selectReviewComments(review_id)
     res.status(200).send({ comments })
+  } catch (err) {
+    next(err)
+  }
+}
+
+exports.postReviewComment = async (req, res, next) => {
+  try {
+    const { review_id } = req.params
+    const { username, body } = req.body
+    const comment = await insertReviewComment(review_id, body, username)
+    res.status(201).send({ comment })
   } catch (err) {
     next(err)
   }
