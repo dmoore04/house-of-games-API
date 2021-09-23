@@ -5,7 +5,7 @@ const {
   commentData,
 } = require("../db/data/test-data")
 
-const { reject404 } = require("../errors/utils")
+const { reject } = require("../errors/utils")
 
 const {
   formatCategoryData,
@@ -99,9 +99,9 @@ describe("Database utils", () => {
 
 describe("Error utils", () => {
   describe("Custom errors", () => {
-    describe("#reject404", () => {
+    describe("reject", () => {
       it("should return a rejected promise with a 404 status and message", async () => {
-        await expect(reject404()).rejects.toEqual({
+        await expect(reject(404, "No data found")).rejects.toEqual({
           msg: "No data found",
           status: 404,
         })
