@@ -260,6 +260,26 @@ describe("/api", () => {
 
           expect(res.body.comment).toMatchObject(expected)
         })
+
+        it("400: responds with an error mesage if the body is malformed (missing values)", async () => {
+          const res = await request(app)
+            .post("/api/reviews/1/comments")
+            .send({
+              bad_key: "test value",
+            })
+            .expect(400)
+
+          expect(res.body.msg).toBe("Missing or invalid value")
+        })
+
+        it("422: responds with an error message when the user given does not exist", async () => {
+          const res = await request(app)
+            .post("/api/reviews/1/comments")
+            .send({ username: "idontexist", body: "test body" })
+            .expect(422)
+
+          expect(res.body.msg).toBe("Bad value in body")
+        })
       })
     })
   })
