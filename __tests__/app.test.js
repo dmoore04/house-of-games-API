@@ -241,13 +241,8 @@ describe("/api", () => {
 
           expect(res.body.msg).toBe("No data found")
         })
-        //TODO: test unhappy path
-        // - bad review_id
-        // - no data
       })
     })
-
-    //TODO: implement GET /:review_id/comments endpoint
     //TODO: implement POST /:review_id/comments endpoint
   })
 })
@@ -259,6 +254,7 @@ describe("/a_bad_route", () => {
         "/apy",
         "/api/cattygories",
         "/api/reeeviewz?sort_by=review_id",
+        "/api/reviews/1/comets",
       ]
       const requests = badRoutes.map((route) =>
         request(app).get(route).expect(404)
