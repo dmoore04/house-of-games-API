@@ -1,4 +1,5 @@
 const db = require("../db/connection")
+const { reject404 } = require("../errors/utils")
 
 exports.selectReviewComments = async (review_id) => {
   const comments = await db.query(
@@ -8,6 +9,8 @@ exports.selectReviewComments = async (review_id) => {
   `,
     [review_id]
   )
+
+  if (comments.rows.length === 0) return reject404()
 
   return comments.rows
 }
