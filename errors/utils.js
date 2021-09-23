@@ -1,1 +1,1 @@
-exports.reject404 = () => Promise.reject({ status: 404, msg: "No data found" })
+exports.reject = (status, msg) => Promise.reject({ status, msg })
