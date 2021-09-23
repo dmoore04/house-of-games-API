@@ -206,6 +206,28 @@ describe("/api", () => {
       })
     })
 
+    describe("/comments", () => {
+      describe("GET", () => {
+        it("200: responds with an array of comments for the given review_id", async () => {
+          const res = await request(app)
+            .get("/api/reviews/2/comments")
+            .expect(200)
+
+          const expected = {
+            comment_id: expect.any(Number),
+            votes: expect.any(Number),
+            created_at: expect.stringMatching(/^\d{4}.+\w$/),
+            author: expect.any(String),
+            body: expect.any(String),
+          }
+
+          res.body.comments.forEach((comment) => {
+            expect(comment).toMatchObject(expected)
+          })
+        })
+      })
+    })
+
     //TODO: implement GET /:review_id/comments endpoint
     //TODO: implement POST /:review_id/comments endpoint
   })
