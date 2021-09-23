@@ -162,11 +162,11 @@ describe("/api", () => {
       })
 
       describe("PATCH", () => {
-        it("201: updates the review and responds with its updated state", async () => {
+        it("200: updates the review and responds with its updated state", async () => {
           const res = await request(app)
             .patch("/api/reviews/1")
             .send({ inc_votes: 3 })
-            .expect(201)
+            .expect(200)
 
           const expected = {
             title: expect.any(String),
@@ -242,8 +242,11 @@ describe("/api", () => {
           expect(res.body.msg).toBe("No data found")
         })
       })
+      //TODO: implement POST /:review_id/comments endpoint
+      describe("POST", () => {
+        it("201:", () => {})
+      })
     })
-    //TODO: implement POST /:review_id/comments endpoint
   })
 })
 

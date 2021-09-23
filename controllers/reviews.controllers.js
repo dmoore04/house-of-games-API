@@ -31,7 +31,7 @@ exports.patchReview = async (req, res, next) => {
     const { review_id } = req.params
     const { inc_votes } = req.body
     const updatedReview = await updateReview(review_id, inc_votes)
-    res.status(201).send({ review: updatedReview })
+    res.status(200).send({ review: updatedReview })
   } catch (err) {
     next(err)
   }
