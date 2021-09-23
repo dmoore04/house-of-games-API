@@ -242,7 +242,6 @@ describe("/api", () => {
           expect(res.body.msg).toBe("No data found")
         })
       })
-      //TODO: implement POST /:review_id/comments endpoint
       describe("POST", () => {
         it("201: creates a new comment object tied to the given review, responds with the posted comment", async () => {
           const res = await request(app)
@@ -280,6 +279,10 @@ describe("/api", () => {
 
           expect(res.body.msg).toBe("Bad value in body")
         })
+
+        //TODO: test bad and not found review_id's
+        //TODO : write README.md
+        //TODO: further routes?
       })
     })
   })
