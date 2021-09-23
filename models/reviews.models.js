@@ -1,6 +1,6 @@
 const db = require("../db/connection")
 const format = require("pg-format")
-const { reject404 } = require("../errors/utils")
+const { reject } = require("../errors/utils")
 
 exports.selectReviews = async (
   sort_by = "created_at",
@@ -41,7 +41,7 @@ exports.selectReviewById = async (review_id) => {
     [review_id]
   )
 
-  if (review.rows.length === 0) return reject404()
+  if (review.rows.length === 0) return reject(404, "No data found")
 
   return review.rows[0]
 }
@@ -56,7 +56,7 @@ exports.updateReview = async (review_id, inc_votes = 0) => {
     [inc_votes, review_id]
   )
 
-  if (updatedReview.rows.length === 0) return reject404()
+  if (updatedReview.rows.length === 0) return reject(404, "No data found")
 
   return updatedReview.rows[0]
 }
