@@ -225,6 +225,25 @@ describe("/api", () => {
             expect(comment).toMatchObject(expected)
           })
         })
+
+        it("400: responds with an error message when review_id is not a number", async () => {
+          const res = await request(app)
+            .get("/api/reviews/not_a_number/comments")
+            .expect(400)
+
+          expect(res.body.msg).toBe("Bad request")
+        })
+
+        it("404: responds with an error message when given review doesnt exist", async () => {
+          const res = await request(app)
+            .get("/api/reviews/999999/comments")
+            .expect(404)
+
+          expect(res.body.msg).toBe("No data found")
+        })
+        //TODO: test unhappy path
+        // - bad review_id
+        // - no data
       })
     })
 
