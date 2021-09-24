@@ -242,7 +242,7 @@ describe("/api", () => {
           expect(res.body.msg).toBe("No data found")
         })
       })
-      describe("POST", () => {
+      describe.only("POST", () => {
         it("201: creates a new comment object tied to the given review, responds with the posted comment", async () => {
           const res = await request(app)
             .post("/api/reviews/1/comments")
@@ -269,6 +269,23 @@ describe("/api", () => {
             .expect(400)
 
           expect(res.body.msg).toBe("Missing or invalid value")
+        })
+
+        it("400: responds with an error message when review_id is not a number ", async () => {
+          const res = await request(app)
+            .post("/api/reviews/not_a_number/comments")
+            .send({ username: "philippaclaire9", body: "test body" })
+            .expect(400)
+          expect(res.body.msg).toBe("Bad request")
+        })
+
+        it("404: responds with an error message when given review does not exist", async () => {
+          const res = await request(app)
+            .post("/api/reviews/99999/comments")
+            .send({ username: "philippaclaire9", body: "test body" })
+            .expect(404)
+
+          expect(res.body.msg).toBe("Invalid review_id")
         })
 
         it("422: responds with an error message when the user given does not exist", async () => {
