@@ -2,11 +2,11 @@
 
 ## Overview
 
-This project mimicks the behaviour of a real world back-end service allowing the user to programatically access data about various board games which could later be served to a front-end architecture for rendering.
+This project mimics the behaviour of a real world back-end service allowing the user to programatically access data about various board games which could later be served to some front-end architecture for rendering.
 
 </br>
 
-The API is built with [Node.js](https://nodejs.org/en/) making use of the [Express.js](https://expressjs.com/) framework for our server and the [node-postgres](https://node-postgres.com/) package for interacting with our [PostgreSQL](https://www.postgresql.org/) database. TDD was applied throughout development using the test suite [Jest](https://jestjs.io/) to incrementally add features to the app.
+The API is built with [Node.js](https://nodejs.org/en/), making use of the [Express.js](https://expressjs.com/) framework for our server and the [node-postgres](https://node-postgres.com/) package for interacting with our [PostgreSQL](https://www.postgresql.org/) database. TDD was applied throughout development using the test suite [Jest](https://jestjs.io/) to incrementally add features to the app.
 
 </br>
 
@@ -16,7 +16,7 @@ The API is built with [Node.js](https://nodejs.org/en/) making use of the [Expre
 
 ## Technologies
 
-_This REST API is build using the back-end portion of the [PERN stack](https://www.geeksforgeeks.org/what-is-pern-stack/)._
+_This REST API is built using the back-end portion of the [PERN stack](https://www.geeksforgeeks.org/what-is-pern-stack/)._
 | Technology | Description |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Node.js** | The core of the project, allows our JavaScript code to be run on a server and enables package integrations with [npm](https://www.npmjs.com/). |
@@ -47,14 +47,15 @@ psql (PostgreSQL) 13.3
 
 ### **User dependencies**
 
-_To run the app and access data locally on your machine._
+_Needed to run the app and access data locally on your machine._
 
 ```yaml
-  "dependencies": {
+"dependencies":
+  {
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "pg": "^8.7.1",
-    "pg-format": "^1.0.4"
+    "pg-format": "^1.0.4",
   }
 ```
 
@@ -62,14 +63,15 @@ _To run the app and access data locally on your machine._
 
 ### **Development dependencies**
 
-_To test changes you make to the project._
+_Needed to test changes you make to the project._
 
 ```yaml
-  "devDependencies": {
+"devDependencies":
+  {
     "jest": "^27.2.0",
     "jest-sorted": "^1.0.12",
     "nodemon": "^2.0.12",
-    "supertest": "^6.1.6"
+    "supertest": "^6.1.6",
   }
 ```
 
@@ -78,7 +80,6 @@ _To test changes you make to the project._
 ## Setting it up
 
 _If you wish to develop this project further you should first fork a copy of this repo to your own GitHub account. Execute any commands pointing to the repo with your new URL_
-
 
 ### **Cloning and dependencies**
 
@@ -91,8 +92,8 @@ _If you wish to develop this project further you should first fork a copy of thi
 
 </br>
 
-2. Install the projects npm dependencies </br>
-   _If you are developing this project add the `-D` to also install the development dependencies_
+2. Install the npm dependencies </br>
+   _If you are developing this project add the `-D` flag to also install the development dependencies_
 
 ```shell
 ~$ npm install
