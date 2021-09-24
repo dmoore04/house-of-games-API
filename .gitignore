@@ -2,3 +2,4 @@ node_modules
 .env.*
 preview-tables*
 logs.txt
+TODO.md
