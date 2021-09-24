@@ -14,7 +14,7 @@ exports.handlePSQL = (err, req, res, next) => {
     },
     23503: {
       status: 404,
-      msg: "Invalid review_id",
+      msg: "No review found",
     },
   }
   if (codeMap[err.code]) {

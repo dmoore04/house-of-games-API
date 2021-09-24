@@ -285,7 +285,7 @@ describe("/api", () => {
             .send({ username: "philippaclaire9", body: "test body" })
             .expect(404)
 
-          expect(res.body.msg).toBe("Invalid review_id")
+          expect(res.body.msg).toBe("No review found")
         })
 
         it("422: responds with an error message when the user given does not exist", async () => {
