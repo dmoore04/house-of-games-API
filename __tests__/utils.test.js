@@ -1,18 +1,24 @@
+const db = require("../db/connection")
 const {
   categoryData,
   userData,
   reviewData,
   commentData,
 } = require("../db/data/test-data")
-
 const { reject } = require("../errors/utils")
-
+const { validateId } = require("../models/utils")
 const {
   formatCategoryData,
   formatUserData,
   formatReviewData,
   formatCommentData,
 } = require("../db/utils/data-manipulation")
+
+afterAll(() => {
+  if (db.end) {
+    return db.end()
+  }
+})
 
 describe("Database utils", () => {
   //TODO: Refactor data formatting, make more dynamic
@@ -105,6 +111,19 @@ describe("Error utils", () => {
           msg: "No data found",
           status: 404,
         })
+      })
+    })
+  })
+})
+
+describe("Model utils", () => {
+  describe("Input validation", () => {
+    describe("validateId(id, table)", () => {
+      it("should return a boolean if given id exists in given table", async () => {
+        const badId = await validateId(99999, "reviews")
+        expect(badId).toBe(false)
+        const goodId = await validateId(1, "reviews")
+        expect(goodId).toBe(true)
       })
     })
   })
