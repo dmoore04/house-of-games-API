@@ -12,6 +12,10 @@ exports.handlePSQL = (err, req, res, next) => {
       status: 400,
       msg: "Bad request",
     },
+    23503: {
+      status: 404,
+      msg: "Invalid review_id",
+    },
   }
   if (codeMap[err.code]) {
     const { status, msg } = codeMap[err.code]
