@@ -1,5 +1,6 @@
 const db = require("../db/connection")
 const { reject } = require("../errors/utils")
+const { validateId } = require("../models/utils")
 
 exports.selectReviewComments = async (review_id) => {
   const comments = await db.query(
@@ -17,6 +18,9 @@ exports.selectReviewComments = async (review_id) => {
 
 exports.insertReviewComment = async (review_id, body, username) => {
   if (!body || !username) return reject(400, "Missing or invalid value")
+
+  const reviewExists = await validateId(review_id, "reviews")
+  if (!reviewExists) return reject(404, "No review found")
 
   const comment = await db.query(
     `
