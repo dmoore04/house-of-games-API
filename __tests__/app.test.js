@@ -296,8 +296,6 @@ describe("/api", () => {
 
           expect(res.body.msg).toBe("Bad value in body")
         })
-
-        //TODO: test bad and not found review_id's
         //TODO : write README.md
         //TODO: further routes?
       })
