@@ -49,7 +49,7 @@ psql (PostgreSQL) 13.3
 
 _To run the app and access data locally on your machine._
 
-```JSON
+```yaml
   "dependencies": {
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -64,7 +64,7 @@ _To run the app and access data locally on your machine._
 
 _To test changes you make to the project._
 
-```JSON
+```yaml
   "devDependencies": {
     "jest": "^27.2.0",
     "jest-sorted": "^1.0.12",
@@ -79,7 +79,6 @@ _To test changes you make to the project._
 
 _If you wish to develop this project further you should first fork a copy of this repo to your own GitHub account. Execute any commands pointing to the repo with your new URL_
 
-</br>
 
 ### **Cloning and dependencies**
 
