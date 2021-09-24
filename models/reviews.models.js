@@ -7,6 +7,9 @@ exports.selectReviews = async (
   order = "desc",
   category
 ) => {
+  if (!["asc", "desc"].includes(order))
+    return reject(400, "Invalid query value")
+
   let queryStr = `
   SELECT reviews.*, COUNT(comments.review_id)::INT AS comment_count
   FROM reviews LEFT JOIN comments 
