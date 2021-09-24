@@ -3,3 +3,5 @@ node_modules
 preview-tables*
 logs.txt
 TODO.md
+hosting.md
+error-handling.md
