@@ -7,6 +7,9 @@ const request = require("supertest")
 beforeEach(() => seed(testData))
 afterAll(() => db.end())
 
+//TODO : write README.md
+//TODO: further routes?
+
 describe("/api", () => {
   describe("GET", () => {
     it("200: responds with a json representation of all available endpoints", async () => {
@@ -111,6 +114,7 @@ describe("/api", () => {
       })
 
       it("400: responds with an error message when a bad query value is provided ", async () => {
+        // bad test? testing prod contradicts this
         const badQueries = [
           "sort_by=not_a_column",
           "sort_by=review_id; DROP TABLE IF EXISTS reviews;",
@@ -203,101 +207,104 @@ describe("/api", () => {
             .expect(404)
           expect(res.body.msg).toBe("No data found")
         })
+
+        // consider response if body has extra properties
       })
-    })
 
-    describe("/comments", () => {
-      describe("GET", () => {
-        it("200: responds with an array of comments for the given review_id", async () => {
-          const res = await request(app)
-            .get("/api/reviews/2/comments")
-            .expect(200)
+      describe("/comments", () => {
+        describe("GET", () => {
+          it("200: responds with an array of comments for the given review_id", async () => {
+            const res = await request(app)
+              .get("/api/reviews/2/comments")
+              .expect(200)
 
-          const expected = {
-            comment_id: expect.any(Number),
-            votes: expect.any(Number),
-            created_at: expect.stringMatching(/^\d{4}.+\w$/),
-            author: expect.any(String),
-            body: expect.any(String),
-          }
+            const expected = {
+              comment_id: expect.any(Number),
+              votes: expect.any(Number),
+              created_at: expect.stringMatching(/^\d{4}.+\w$/),
+              author: expect.any(String),
+              body: expect.any(String),
+            }
 
-          res.body.comments.forEach((comment) => {
-            expect(comment).toMatchObject(expected)
+            res.body.comments.forEach((comment) => {
+              expect(comment).toMatchObject(expected)
+            })
+          })
+
+          it("400: responds with an error message when review_id is not a number", async () => {
+            const res = await request(app)
+              .get("/api/reviews/not_a_number/comments")
+              .expect(400)
+
+            expect(res.body.msg).toBe("Bad request")
+          })
+
+          it("404: responds with an error message when given review doesnt exist", async () => {
+            const res = await request(app)
+              .get("/api/reviews/999999/comments")
+              .expect(404)
+
+            expect(res.body.msg).toBe("No data found")
           })
         })
+        describe("POST", () => {
+          it("201: creates a new comment object tied to the given review, responds with the posted comment", async () => {
+            const res = await request(app)
+              .post("/api/reviews/1/comments")
+              .send({
+                username: "mallionaire",
+                body: "es muy grande mucho",
+              })
+              .expect(201)
 
-        it("400: responds with an error message when review_id is not a number", async () => {
-          const res = await request(app)
-            .get("/api/reviews/not_a_number/comments")
-            .expect(400)
+            const expected = {
+              comment_id: expect.any(Number),
+              votes: expect.any(Number),
+              created_at: expect.stringMatching(/^\d{4}.+\w$/),
+              author: expect.any(String),
+              body: expect.any(String),
+            }
 
-          expect(res.body.msg).toBe("Bad request")
+            expect(res.body.comment).toMatchObject(expected)
+          })
+
+          it("400: responds with an error mesage if the body is malformed (missing values)", async () => {
+            const res = await request(app)
+              .post("/api/reviews/1/comments")
+              .send({
+                bad_key: "test value",
+              })
+              .expect(400)
+
+            expect(res.body.msg).toBe("Missing or invalid value")
+          })
+
+          it("400: responds with an error message when review_id is not a number ", async () => {
+            const res = await request(app)
+              .post("/api/reviews/not_a_number/comments")
+              .send({ username: "philippaclaire9", body: "test body" })
+              .expect(400)
+            expect(res.body.msg).toBe("Bad request")
+          })
+
+          it("404: responds with an error message when given review does not exist", async () => {
+            const res = await request(app)
+              .post("/api/reviews/99999/comments")
+              .send({ username: "philippaclaire9", body: "test body" })
+              .expect(404)
+
+            expect(res.body.msg).toBe("No review found")
+          })
+
+          it("422: responds with an error message when the user given does not exist", async () => {
+            const res = await request(app)
+              .post("/api/reviews/1/comments")
+              .send({ username: "idontexist", body: "test body" })
+              .expect(422)
+
+            expect(res.body.msg).toBe("Bad value in body")
+          })
         })
-
-        it("404: responds with an error message when given review doesnt exist", async () => {
-          const res = await request(app)
-            .get("/api/reviews/999999/comments")
-            .expect(404)
-
-          expect(res.body.msg).toBe("No data found")
-        })
-      })
-      describe("POST", () => {
-        it("201: creates a new comment object tied to the given review, responds with the posted comment", async () => {
-          const res = await request(app)
-            .post("/api/reviews/1/comments")
-            .send({ username: "mallionaire", body: "es muy grande mucho" })
-            .expect(201)
-
-          const expected = {
-            comment_id: expect.any(Number),
-            votes: expect.any(Number),
-            created_at: expect.stringMatching(/^\d{4}.+\w$/),
-            author: expect.any(String),
-            body: expect.any(String),
-          }
-
-          expect(res.body.comment).toMatchObject(expected)
-        })
-
-        it("400: responds with an error mesage if the body is malformed (missing values)", async () => {
-          const res = await request(app)
-            .post("/api/reviews/1/comments")
-            .send({
-              bad_key: "test value",
-            })
-            .expect(400)
-
-          expect(res.body.msg).toBe("Missing or invalid value")
-        })
-
-        it("400: responds with an error message when review_id is not a number ", async () => {
-          const res = await request(app)
-            .post("/api/reviews/not_a_number/comments")
-            .send({ username: "philippaclaire9", body: "test body" })
-            .expect(400)
-          expect(res.body.msg).toBe("Bad request")
-        })
-
-        it("404: responds with an error message when given review does not exist", async () => {
-          const res = await request(app)
-            .post("/api/reviews/99999/comments")
-            .send({ username: "philippaclaire9", body: "test body" })
-            .expect(404)
-
-          expect(res.body.msg).toBe("No review found")
-        })
-
-        it("422: responds with an error message when the user given does not exist", async () => {
-          const res = await request(app)
-            .post("/api/reviews/1/comments")
-            .send({ username: "idontexist", body: "test body" })
-            .expect(422)
-
-          expect(res.body.msg).toBe("Bad value in body")
-        })
-        //TODO : write README.md
-        //TODO: further routes?
       })
     })
   })
