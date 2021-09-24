@@ -242,7 +242,7 @@ describe("/api", () => {
           expect(res.body.msg).toBe("No data found")
         })
       })
-      describe.only("POST", () => {
+      describe("POST", () => {
         it("201: creates a new comment object tied to the given review, responds with the posted comment", async () => {
           const res = await request(app)
             .post("/api/reviews/1/comments")
