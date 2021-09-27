@@ -21,7 +21,6 @@ afterAll(() => {
 })
 
 describe("Database utils", () => {
-  //TODO: Refactor data formatting, make more dynamic
   describe("Data Formatting", () => {
     test("each function returns an empty array if one is passed", () => {
       const functions = [

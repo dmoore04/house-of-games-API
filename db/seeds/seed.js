@@ -50,32 +50,27 @@ const createTables = async () => {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       body TEXT NOT NULL
     );`
-  // concurrently create tables with no dependencies
+
   await Promise.all([db.query(createCategories), db.query(createUsers)])
-  // sequentially create dependant tables
+
   await db.query(createReviews)
   await db.query(createComments)
-
-  // console.log("Created all tables.\n")
 }
 
 const dropTables = async () => {
-  // sequantially drop linked tables
   await db.query(`DROP TABLE IF EXISTS comments;`)
   await db.query(`DROP TABLE IF EXISTS reviews;`)
-  // concurrently drop unlinked tables
+
   await Promise.all([
     db.query(`DROP TABLE IF EXISTS users;`),
     db.query(`DROP TABLE IF EXISTS categories;`),
   ])
-  // console.log("Dropped all tables.\n")
 }
 
 const insertData = async (data) => {
   const { categoryValues, userValues, reviewValues, commentValues } =
     formatData(data)
 
-  // concurrently insert values for unlinked tables
   const insertUsersQuery = format(
     `
   INSERT INTO users
@@ -97,13 +92,12 @@ const insertData = async (data) => {
   `,
     categoryValues
   )
-  // concurrently insert unlinked values
+
   await Promise.all([
     db.query(insertUsersQuery),
     db.query(insertCategoriesQuery),
   ])
 
-  // sequentially insert linked values
   const insertReviewsQuery = format(
     `
   INSERT INTO reviews
@@ -127,6 +121,4 @@ const insertData = async (data) => {
     commentValues
   )
   await db.query(insertCommentsQuery)
-
-  // console.log(`Inserted values into tables.\n`)
 }

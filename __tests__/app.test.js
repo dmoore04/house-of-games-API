@@ -7,9 +7,6 @@ const request = require("supertest")
 beforeEach(() => seed(testData))
 afterAll(() => db.end())
 
-//TODO : write README.md
-//TODO: further routes?
-
 describe("/api", () => {
   describe("GET", () => {
     it("200: responds with a json representation of all available endpoints", async () => {
@@ -114,7 +111,6 @@ describe("/api", () => {
       })
 
       it("400: responds with an error message when a bad query value is provided ", async () => {
-        // bad test? testing prod contradicts this
         const badQueries = [
           "sort_by=not_a_column",
           "sort_by=review_id; DROP TABLE IF EXISTS reviews;",
@@ -207,8 +203,6 @@ describe("/api", () => {
             .expect(404)
           expect(res.body.msg).toBe("No data found")
         })
-
-        // consider response if body has extra properties
       })
 
       describe("/comments", () => {

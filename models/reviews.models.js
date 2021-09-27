@@ -21,7 +21,7 @@ exports.selectReviews = async (
     queryStr += `WHERE category = $1`
     queryValues.push(category)
   }
-  // SQL Injection???
+
   queryStr += format(
     `
   GROUP BY reviews.review_id
