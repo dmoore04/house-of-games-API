@@ -43,6 +43,12 @@ describe("Database utils", () => {
       it("should handle arbitrary numbers of categories", () => {
         expect(formatCategoryData(categoryData).length).toBe(4)
       })
+
+      it("should not mutate the input data", () => {
+        const categoryDataClone = { ...categoryData }
+        formatCategoryData(categoryData)
+        expect(categoryData).toMatchObject(categoryDataClone)
+      })
     })
 
     describe("#formatUserData", () => {
@@ -58,6 +64,12 @@ describe("Database utils", () => {
 
       it("should handle an arbitrary number of person objects", () => {
         expect(formatUserData(userData).length).toBe(4)
+      })
+
+      it("should not mutate the input data", () => {
+        const userDataClone = { ...userData }
+        formatUserData(userData)
+        expect(userData).toMatchObject(userDataClone)
       })
     })
 
@@ -80,6 +92,12 @@ describe("Database utils", () => {
       it("should handle an arbitrary number of person objects", () => {
         expect(formatReviewData(reviewData).length).toBe(13)
       })
+
+      it("should not mutate the input data", () => {
+        const reviewDataClone = { ...reviewData }
+        formatReviewData(reviewData)
+        expect(reviewData).toMatchObject(reviewDataClone)
+      })
     })
 
     describe("#formatCommentData", () => {
@@ -97,6 +115,12 @@ describe("Database utils", () => {
 
       it("should handle arbitrary numbers of comments", () => {
         expect(formatCommentData(commentData).length).toBe(6)
+      })
+
+      it("should not mutate the input data", () => {
+        const commentDataClone = { ...commentData }
+        formatCommentData(commentData)
+        expect(commentData).toMatchObject(commentDataClone)
       })
     })
   })
