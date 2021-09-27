@@ -29,6 +29,7 @@ describe("Database utils", () => {
         formatReviewData,
         formatUserData,
       ]
+
       functions.forEach((func) => {
         expect(func([])).toEqual([])
       })

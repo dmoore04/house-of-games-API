@@ -10,8 +10,21 @@ afterAll(() => db.end())
 describe("/api", () => {
   describe("GET", () => {
     it("200: responds with a json representation of all available endpoints", async () => {
-      const endpoints = ["GET /api/categories", "GET /api", "GET /api/reviews"]
+      const endpoints = [
+        "GET /api/categories",
+        "GET /api",
+        "GET /api/reviews",
+        "GET /api/reviews/:review_id",
+        "PATCH /api/reviews/:review_id",
+        "GET /api/reviews/:review_id/comments",
+        "POST /api/reviews/:review_id/comments",
+      ]
+
       const res = await request(app).get("/api").expect(200)
+      const resKeys = Object.keys(res.body.endpoints)
+
+      expect(resKeys.length).toBe(endpoints.length)
+
       endpoints.forEach((endpoint) => {
         expect(res.body.endpoints).toHaveProperty(endpoint)
         expect(res.body.endpoints[endpoint]).toHaveProperty("description")
@@ -43,7 +56,9 @@ describe("/api", () => {
     describe("GET", () => {
       it("200: responds with an array of all reviews", async () => {
         const res = await request(app).get("/api/reviews").expect(200)
+
         expect(res.body.reviews.length).toBe(13)
+
         const expected = {
           title: expect.any(String),
           owner: expect.any(String),
@@ -77,6 +92,7 @@ describe("/api", () => {
         const responses = await Promise.all(requests)
 
         responses.forEach((response, index) => {
+          expect(response.body.reviews.length).toBe(13)
           expect(response.body.reviews).toBeSortedBy(validQueries[index], {
             descending: true,
           })
@@ -98,12 +114,16 @@ describe("/api", () => {
           "children's games",
         ]
 
+        const lengths = [1, 11, 1, 0]
+
         const requests = categories.map((category) =>
           request(app).get(`/api/reviews?category=${category}`).expect(200)
         )
 
         const responses = await Promise.all(requests)
+
         responses.forEach((response, index) => {
+          expect(response.body.reviews.length).toBe(lengths[index])
           response.body.reviews.forEach((review) => {
             expect(review).toHaveProperty("category", categories[index])
           })
@@ -126,6 +146,9 @@ describe("/api", () => {
         )
 
         const responses = await Promise.all(requests)
+
+        expect(responses.length).toBe(badQueries.length)
+
         responses.forEach((response) => {
           expect(response.body.msg).toBe("Invalid query value")
         })
@@ -219,6 +242,8 @@ describe("/api", () => {
               author: expect.any(String),
               body: expect.any(String),
             }
+
+            expect(res.body.comments.length).toBe(3)
 
             res.body.comments.forEach((comment) => {
               expect(comment).toMatchObject(expected)
@@ -317,6 +342,9 @@ describe("/a_bad_route", () => {
         request(app).get(route).expect(404)
       )
       const responses = await Promise.all(requests)
+
+      expect(responses.length).toBe(badRoutes.length)
+
       const bodies = responses.map((response) => response.body)
       bodies.forEach((body) => {
         expect(body.msg).toBe("Route not found")
