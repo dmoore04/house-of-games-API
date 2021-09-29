@@ -3,6 +3,9 @@ const { reject } = require("../errors/utils")
 const { validateId } = require("../models/utils")
 
 exports.selectReviewComments = async (review_id) => {
+  if (!(await validateId(review_id, "reviews")))
+    return reject(404, "No data found")
+
   const comments = await db.query(
     `
   SELECT * FROM comments
@@ -10,8 +13,6 @@ exports.selectReviewComments = async (review_id) => {
   `,
     [review_id]
   )
-
-  if (comments.rows.length === 0) return reject(404, "No data found")
 
   return comments.rows
 }

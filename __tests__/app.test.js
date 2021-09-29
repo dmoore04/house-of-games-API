@@ -259,6 +259,14 @@ describe("/api", () => {
             })
           })
 
+          it("200: responds with an array of comments for the given review_id (no comments)", async () => {
+            const res = await request(app)
+              .get("/api/reviews/1/comments")
+              .expect(200)
+
+            expect(res.body.comments).toEqual([])
+          })
+
           it("400: responds with an error message when review_id is not a number", async () => {
             const res = await request(app)
               .get("/api/reviews/not_a_number/comments")
