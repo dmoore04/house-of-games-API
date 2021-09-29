@@ -20,6 +20,8 @@ describe("/api", () => {
         "POST /api/reviews/:review_id/comments",
         "DELETE /api/comments/:comment_id",
         "GET /api/users",
+        "DELETE /api/comments/:comment_id",
+        "PATCH /api/comments/:comment_id",
       ]
 
       const res = await request(app).get("/api").expect(200)
@@ -383,7 +385,7 @@ describe("/api", () => {
         })
       })
 
-      describe.only("PATCH", () => {
+      describe("PATCH", () => {
         it("200: updates a single comment object, responds with the updated comment", async () => {
           const res = await request(app)
             .patch("/api/comments/1")
