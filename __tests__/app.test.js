@@ -304,6 +304,19 @@ describe("/api", () => {
             expect(res.body.comment).toMatchObject(expected)
           })
 
+          it("201: ignores unnecessary properties", async () => {
+            const res = await request(app)
+              .post("/api/reviews/1/comments")
+              .send({
+                username: "mallionaire",
+                body: "es muy grande mucho",
+                fruit: "bananas",
+              })
+              .expect(201)
+
+            expect(res.body.comment).not.toHaveProperty("fruit")
+          })
+
           it("400: responds with an error mesage if the body is malformed (missing values)", async () => {
             const res = await request(app)
               .post("/api/reviews/1/comments")
