@@ -69,8 +69,10 @@ describe("/api", () => {
           review_id: expect.any(Number),
           comment_count: expect.any(Number),
         }
+
         res.body.reviews.forEach((review) => {
           expect(review).toMatchObject(expected)
+          expect(review).not.toHaveProperty("review_body")
         })
       })
 
