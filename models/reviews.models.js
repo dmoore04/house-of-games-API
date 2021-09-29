@@ -30,6 +30,11 @@ exports.selectReviews = async (
   )
 
   const reviews = await db.query(queryStr, queryValues)
+
+  reviews.rows.forEach((review) => {
+    delete review.review_body
+  })
+
   return reviews.rows
 }
 
