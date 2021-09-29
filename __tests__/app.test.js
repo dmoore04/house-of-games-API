@@ -403,7 +403,7 @@ describe("/api", () => {
       })
     })
     describe("/:username", () => {
-      describe.only("GET", () => {
+      describe("GET", () => {
         it("200: responds with the given users object", async () => {
           const res = await request(app).get("/api/users/dav3rid").expect(200)
 
