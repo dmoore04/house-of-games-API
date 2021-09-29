@@ -52,3 +52,16 @@ exports.removeComment = async (comment_id) => {
 
   return {}
 }
+
+exports.updateComment = async (comment_id, inc_votes = 0) => {
+  const queryStr = `
+  UPDATE comments
+  set votes = votes + $1
+  WHERE comment_id = $2
+  RETURNING *;
+  `
+
+  const results = await db.query(queryStr, [inc_votes, comment_id])
+
+  return results.rows[0]
+}
