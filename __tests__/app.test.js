@@ -357,6 +357,18 @@ describe("/api", () => {
       })
     })
   })
+  describe("/comments", () => {
+    describe("/:comment_id", () => {
+      describe.only("DELETE", () => {
+        it("204: deletes comment from the database, responds with no content", async () => {
+          const res = await request(app).delete("/api/comments/1").expect(204)
+          expect(res.body).toEqual({})
+          const res2 = await request(app).delete("/api/comments/1").expect(404)
+          expect(res2.body.msg).toBe("No data found")
+        })
+      })
+    })
+  })
 })
 
 describe("/a_bad_route", () => {
