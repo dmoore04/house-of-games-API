@@ -104,7 +104,7 @@
   },
   "PATCH /api/comments/:comment_id": {
     "description": "updates an existing comment, returns the updated comment object",
-    "accepts" : {"inc_votes": "int: newVotes"}
+    "accepts": { "inc_votes": "int: newVotes" },
     "exampleResponse": {
       "comment": {
         "comment_id": 1,
