@@ -416,6 +416,14 @@ describe("/api", () => {
 
           expect(res.body.user).toMatchObject(expected)
         })
+
+        it("404: responds with an error message when no user is found", async () => {
+          const res = await request(app)
+            .get("/api/users/theinvisiblem4n")
+            .expect(404)
+
+          expect(res.body.msg).toBe("No data found")
+        })
       })
     })
   })
