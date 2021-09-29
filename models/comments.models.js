@@ -66,5 +66,7 @@ exports.updateComment = async (comment_id, inc_votes = 0) => {
 
   const results = await db.query(queryStr, [inc_votes, comment_id])
 
+  if (results.rows.length === 0) return reject(404, "No data found")
+
   return results.rows[0]
 }
