@@ -1,4 +1,5 @@
 const db = require("../db/connection")
+const { reject } = require("../errors/utils")
 
 exports.selectUsers = async () => {
   const queryStr = `SELECT * from users;`
@@ -14,6 +15,8 @@ exports.selectUser = async (username) => {
   WHERE username = $1;
   `
   const results = await db.query(queryStr, [username])
+
+  if (results.rows.length === 0) return reject(404, "No data found")
 
   return results.rows[0]
 }
