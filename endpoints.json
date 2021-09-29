@@ -113,5 +113,15 @@
         }
       ]
     }
+  },
+  "GET /api/users/:username": {
+    "description": "Responds with the given users object",
+    "exampleResponse": {
+      "user": {
+        "username": "cooljmessy",
+        "avatar_url": "https://i.imgur.com/WfX0Neu.jpg",
+        "name": "Peter Messy"
+      }
+    }
   }
 }
