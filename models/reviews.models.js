@@ -1,6 +1,7 @@
 const db = require("../db/connection")
 const format = require("pg-format")
 const { reject } = require("../errors/utils")
+const { validateCategory } = require("./categories.models")
 
 exports.selectReviews = async (
   sort_by = "created_at",
@@ -18,6 +19,9 @@ exports.selectReviews = async (
 
   const queryValues = []
   if (category) {
+    if (parseInt(category)) return reject(400, "Invalid query value")
+    if (!(await validateCategory(category)))
+      return reject(404, "non-existent category")
     queryStr += `WHERE category = $1`
     queryValues.push(category)
   }

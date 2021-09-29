@@ -132,20 +132,19 @@ describe("/api", () => {
         })
       })
 
-      it("400: responds with an error message when a bad query value is provided ", async () => {
+      it("400: responds with an error message when an invalid query value is provided ", async () => {
         const badQueries = [
           "sort_by=not_a_column",
           "sort_by=review_id; DROP TABLE IF EXISTS reviews;",
           "sort_by=1",
-          "category=not_a_category",
           "category=1",
           "order=not_an_order",
           "order=1",
         ]
 
-        const requests = badQueries.map((query) =>
-          request(app).get(`/api/reviews?${badQueries}`).expect(400)
-        )
+        const requests = badQueries.map((query) => {
+          return request(app).get(`/api/reviews?${query}`).expect(400)
+        })
 
         const responses = await Promise.all(requests)
 
@@ -154,6 +153,14 @@ describe("/api", () => {
         responses.forEach((response) => {
           expect(response.body.msg).toBe("Invalid query value")
         })
+      })
+
+      it("404: responds with an error message when category value could not be found", async () => {
+        const res = await request(app)
+          .get("/api/reviews?category=bananas")
+          .expect(404)
+
+        expect(res.body.msg).toBe("non-existent category")
       })
     })
     describe("/:review_id", () => {
