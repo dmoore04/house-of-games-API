@@ -402,6 +402,22 @@ describe("/api", () => {
         })
       })
     })
+    describe("/:username", () => {
+      describe.only("GET", () => {
+        it("200: responds with the given users object", async () => {
+          const res = await request(app).get("/api/users/dav3rid").expect(200)
+
+          const expected = {
+            username: "dav3rid",
+            avatar_url:
+              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+            name: "dave",
+          }
+
+          expect(res.body.user).toMatchObject(expected)
+        })
+      })
+    })
   })
 })
 
