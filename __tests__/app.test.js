@@ -18,6 +18,7 @@ describe("/api", () => {
         "PATCH /api/reviews/:review_id",
         "GET /api/reviews/:review_id/comments",
         "POST /api/reviews/:review_id/comments",
+        "DELETE /api/comments/:comment_id",
       ]
 
       const res = await request(app).get("/api").expect(200)
@@ -378,6 +379,25 @@ describe("/api", () => {
             .expect(400)
 
           expect(res.body.msg).toBe("comment_id should be a number")
+        })
+      })
+    })
+  })
+  describe("/users", () => {
+    describe("GET", () => {
+      it("200: responds  with an array of user objects", async () => {
+        const res = await request(app).get("/api/users").expect(200)
+
+        expect(res.body.users.length).toBe(4)
+
+        const expected = {
+          username: expect.any(String),
+          avatar_url: expect.stringContaining("https://"),
+          name: expect.any(String),
+        }
+
+        res.body.users.forEach((user) => {
+          expect(user).toMatchObject(expected)
         })
       })
     })
