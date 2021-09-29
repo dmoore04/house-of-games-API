@@ -418,6 +418,22 @@ describe("/api", () => {
 
           expect(res.body.msg).toBe("No data found")
         })
+
+        it("400: responds with an error message if req body is malformed", async () => {
+          const res = await request(app)
+            .patch("/api/comments/1")
+            .send({ bad_key: 100 })
+            .expect(400)
+
+          expect(res.body.msg).toBe("Missing or invalid value")
+
+          const res2 = await request(app)
+            .patch("/api/comments/1")
+            .send({ inc_votes: "notanum" })
+            .expect(400)
+
+          expect(res2.body.msg).toBe("inc_votes should be a number")
+        })
       })
     })
   })
