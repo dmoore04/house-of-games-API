@@ -37,10 +37,14 @@ exports.insertReviewComment = async (review_id, body, username) => {
 }
 
 exports.removeComment = async (comment_id) => {
+  if (Number.isNaN(parseInt(comment_id)))
+    return reject(400, "comment_id should be a number")
+
   const queryStr = `
   DELETE FROM comments
   WHERE comment_id = $1
-  RETURNING *;`
+  RETURNING *;
+  `
 
   const results = await db.query(queryStr, [comment_id])
 
