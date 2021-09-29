@@ -359,12 +359,25 @@ describe("/api", () => {
   })
   describe("/comments", () => {
     describe("/:comment_id", () => {
-      describe.only("DELETE", () => {
+      describe("DELETE", () => {
         it("204: deletes comment from the database, responds with no content", async () => {
           const res = await request(app).delete("/api/comments/1").expect(204)
           expect(res.body).toEqual({})
           const res2 = await request(app).delete("/api/comments/1").expect(404)
           expect(res2.body.msg).toBe("No data found")
+        })
+
+        it("404: responds with an error message if the comment was not in the db", async () => {
+          const res = await request(app).delete("/api/comments/0").expect(404)
+          expect(res.body.msg).toBe("No data found")
+        })
+
+        it("400: responds with an error message if comment_id is not a number", async () => {
+          const res = await request(app)
+            .delete("/api/comments/bananas")
+            .expect(400)
+
+          expect(res.body.msg).toBe("comment_id should be a number")
         })
       })
     })
