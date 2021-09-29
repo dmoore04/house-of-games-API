@@ -54,6 +54,9 @@ exports.removeComment = async (comment_id) => {
 }
 
 exports.updateComment = async (comment_id, inc_votes = 0) => {
+  if (Number.isNaN(parseInt(comment_id)))
+    return reject(400, "comment_id should be a number")
+
   const queryStr = `
   UPDATE comments
   set votes = votes + $1
