@@ -400,6 +400,15 @@ describe("/api", () => {
 
           expect(res.body.comment).toMatchObject(expected)
         })
+
+        it("400: responds with an error message when comment_id is not a number", async () => {
+          const res = await request(app)
+            .patch("/api/comments/not_an_id")
+            .send({ inc_votes: 1 })
+            .expect(400)
+
+          expect(res.body.msg).toBe("comment_id should be a number")
+        })
       })
     })
   })
