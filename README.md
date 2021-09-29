@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project mimics the behaviour of a real world back-end service allowing the user to programatically access data about various board games which could later be served to some front-end architecture for rendering.
+This project mimics the behaviour of a real world back-end service allowing the user to programmatically access data about various board games which could later be served to some front-end architecture for rendering.
 
 </br>
 
