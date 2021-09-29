@@ -409,6 +409,15 @@ describe("/api", () => {
 
           expect(res.body.msg).toBe("comment_id should be a number")
         })
+
+        it("404: responds with an error message when id is valid but no comments found", async () => {
+          const res = await request(app)
+            .patch("/api/comments/0")
+            .send({ inc_votes: 1 })
+            .expect(404)
+
+          expect(res.body.msg).toBe("No data found")
+        })
       })
     })
   })
