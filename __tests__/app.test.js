@@ -382,6 +382,25 @@ describe("/api", () => {
           expect(res.body.msg).toBe("comment_id should be a number")
         })
       })
+
+      describe.only("PATCH", () => {
+        it("200: updates a single comment object, responds with the updated comment", async () => {
+          const res = await request(app)
+            .patch("/api/comments/1")
+            .send({ inc_votes: 1 })
+            .expect(200)
+
+          const expected = {
+            comment_id: 1,
+            votes: 17,
+            created_at: expect.stringMatching(/^\d{4}.+\w$/),
+            author: "bainesface",
+            body: "I loved this game too!",
+          }
+
+          expect(res.body.comment).toMatchObject(expected)
+        })
+      })
     })
   })
   describe("/users", () => {
