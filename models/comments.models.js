@@ -35,3 +35,16 @@ exports.insertReviewComment = async (review_id, body, username) => {
 
   return comment.rows[0]
 }
+
+exports.removeComment = async (comment_id) => {
+  const queryStr = `
+  DELETE FROM comments
+  WHERE comment_id = $1
+  RETURNING *;`
+
+  const results = await db.query(queryStr, [comment_id])
+
+  if (results.rows.length === 0) return reject(404, "No data found")
+
+  return {}
+}
