@@ -2,13 +2,17 @@ const db = require("../db/connection")
 const format = require("pg-format")
 const { reject } = require("../errors/utils")
 const { validateCategory } = require("./categories.models")
+const reviewData = require("../db/data/development-data/reviews")
 
 exports.selectReviews = async (
   sort_by = "created_at",
   order = "desc",
   category
 ) => {
-  if (!["asc", "desc"].includes(order))
+  const validSortQueries = Object.keys(reviewData[0])
+  validSortQueries.push("review_id")
+
+  if (!["asc", "desc"].includes(order) || !validSortQueries.includes(sort_by))
     return reject(400, "Invalid query value")
 
   let queryStr = `
