@@ -134,7 +134,7 @@ describe("/api", () => {
 
       it("400: responds with an error message when an invalid query value is provided ", async () => {
         const badQueries = [
-          "sort_by=not_a_column",
+          "sort_by=bananas",
           "sort_by=review_id; DROP TABLE IF EXISTS reviews;",
           "sort_by=1",
           "category=1",
