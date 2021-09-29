@@ -101,5 +101,17 @@
   "DELETE /api/comments/:comment_id": {
     "description": "Removes the given comment, does not respond with any content",
     "exampleReponse": {}
+  },
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "grumpy19",
+          "avatar_url": "https://www.tumbit.com/profile-image/4/original/mr-grumpy.jpg",
+          "name": "Paul Grump"
+        }
+      ]
+    }
   }
 }
