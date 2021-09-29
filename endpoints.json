@@ -97,5 +97,9 @@
         "body": "I loved this game too!"
       }
     }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "Removes the given comment, does not respond with any content",
+    "exampleReponse": {}
   }
 }
