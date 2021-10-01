@@ -85,7 +85,6 @@ describe("/api", () => {
           "review_id",
           "created_at",
           "category",
-          "title",
           "owner",
           "votes",
           "designer",
@@ -99,9 +98,6 @@ describe("/api", () => {
 
         responses.forEach((response, index) => {
           expect(response.body.reviews.length).toBe(13)
-          if (validQueries[index] === "title") {
-            console.log(response.body.reviews)
-          }
           expect(response.body.reviews).toBeSortedBy(validQueries[index], {
             descending: true,
           })
