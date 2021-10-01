@@ -85,6 +85,7 @@ describe("/api", () => {
           "review_id",
           "created_at",
           "category",
+          "title",
           "owner",
           "votes",
           "designer",
