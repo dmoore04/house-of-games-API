@@ -10,7 +10,7 @@ exports.selectReviews = async (
   category
 ) => {
   const validSortQueries = Object.keys(reviewData[0])
-  validSortQueries.push("review_id")
+  validSortQueries.push("review_id", "comment_count")
 
   if (!["asc", "desc"].includes(order) || !validSortQueries.includes(sort_by))
     return reject(400, "Invalid query value")
