@@ -84,10 +84,10 @@ _If you wish to develop this project further you should first fork a copy of thi
 ### **Cloning and dependencies**
 
 1. Clone the repo to your local machine </br>
-   _This will create and navigate to the folder **`be-nc-games`**_
+   _This will create and navigate to the folder **`house-of-games-API`**_
 
 ```shell
-~$ git clone https://github.com/dmoore04/be-nc-games.git && cd be-nc-games
+~$ git clone https://github.com/dmoore04/house-of-games-API.git && cd house-of-games-API
 ```
 
 </br>
