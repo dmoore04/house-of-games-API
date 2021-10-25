@@ -29,7 +29,7 @@ _This REST API is built using the back-end portion of the [PERN stack](https://w
 
 ### **Software**
 
-**Node.js [15.0.1](https://nodejs.org/en/blog/release/v15.0.1/) >=**
+**Node.js [14.8.1](https://nodejs.org/en/download/) >=**
 
 ```shell
 ~$ node --version
