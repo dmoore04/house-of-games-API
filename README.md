@@ -33,7 +33,7 @@ _This REST API is built using the back-end portion of the [PERN stack](https://w
 
 ```shell
 ~$ node --version
-v15.0.1
+v14.8.1
 ```
 
 **PostgreSQL [13.3](https://www.postgresql.org/docs/13/release-13-3.html) >=**
