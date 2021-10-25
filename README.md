@@ -79,7 +79,7 @@ _Needed to test changes you make to the project._
 
 ## Setting it up
 
-_If you wish to develop this project further you should first fork a copy of this repo to your own GitHub account. Execute any commands pointing to the repo with your new URL_
+_If you wish to develop this project further you should first fork a copy of this repo to your own GitHub account. Execute any commands pointing to the repo with your new URL._
 
 ### **Cloning and dependencies**
 
@@ -88,6 +88,7 @@ _If you wish to develop this project further you should first fork a copy of thi
 
 ```shell
 ~$ git clone https://github.com/dmoore04/house-of-games-API.git && cd house-of-games-API
+Cloning into 'house-of-games-API'...
 ```
 
 </br>
